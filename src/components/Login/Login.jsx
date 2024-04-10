@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import useRegister from "../../hooks/useRegister";
 
 const fakeUser = {
   name: "parnia",
@@ -7,13 +8,19 @@ const fakeUser = {
 function Login() {
   const [name, setName] = useState("");
   const [pass, setPass] = useState("");
-  const [auth, setAuth] = useState({ authenicated: localStorage.getItem("authenicated") || false, error: "" });
+  const [auth, setAuth] = useState({
+    authenicated: localStorage.getItem("authenicated") || false,
+    error: "",
+  });
   const handleSubmit = (e) => {
     e.preventDefault();
-    if(!auth.authenicated){
+    if (!auth.authenicated) {
       if (name == fakeUser.name && pass == fakeUser.pass) {
         localStorage.setItem("authenicated", !auth.authenicated);
-        setAuth((prevAuth) => ({ ...prevAuth, authenicated: !auth.authenicated}));
+        setAuth((prevAuth) => ({
+          ...prevAuth,
+          authenicated: !auth.authenicated,
+        }));
         // console.log(auth.authenicated);
         setName("");
         setPass("");
@@ -23,13 +30,13 @@ function Login() {
           error: "name or password is wrong.",
         }));
       }
-    }
-    else{
-        const isAuth = auth.authenicated;
-        localStorage.setItem("authenicated", !isAuth);
-        setAuth((prevAuth) => ({ ...prevAuth, authenicated: !isAuth}));
+    } else {
+      const isAuth = auth.authenicated;
+      localStorage.setItem("authenicated", !isAuth);
+      setAuth((prevAuth) => ({ ...prevAuth, authenicated: !isAuth }));
     }
   };
+  const [error, loginUser] = useRegister();
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -61,6 +68,10 @@ function Login() {
           </div>
         )}
       </form>
+      {/* <div>
+         <p>login user:{loginUser}</p>
+         <p>error:{error}</p>
+      </div> */}
     </div>
   );
 }
