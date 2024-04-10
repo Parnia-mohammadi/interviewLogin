@@ -7,22 +7,32 @@ const fakeUser = {
 function Login() {
   const [name, setName] = useState("");
   const [pass, setPass] = useState("");
-  const [auth, setAuth] = useState({ authenicated: false, error: "" });
+  const [auth, setAuth] = useState({ authenicated: localStorage.getItem("authenicated") || false, error: "" });
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (name == fakeUser.name && pass == fakeUser.pass) {
-      setAuth((prevAuth) => ({ ...prevAuth, authenicated: true}));
-      console.log(auth.authenicated);
-    } else {
-      setAuth((prevAuth) => ({
-        ...prevAuth,
-        error: "name or password is wrong.",
-      }));
+    if(!auth.authenicated){
+      if (name == fakeUser.name && pass == fakeUser.pass) {
+        localStorage.setItem("authenicated", !auth.authenicated);
+        setAuth((prevAuth) => ({ ...prevAuth, authenicated: !auth.authenicated}));
+        // console.log(auth.authenicated);
+        setName("");
+        setPass("");
+      } else {
+        setAuth((prevAuth) => ({
+          ...prevAuth,
+          error: "name or password is wrong.",
+        }));
+      }
+    }
+    else{
+        const isAuth = auth.authenicated;
+        localStorage.setItem("authenicated", !isAuth);
+        setAuth((prevAuth) => ({ ...prevAuth, authenicated: !isAuth}));
     }
   };
   return (
     <div>
-      <form onSubmite={handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <label htmlFor="name">Name : </label>
         <input
           type="text"
@@ -42,7 +52,7 @@ function Login() {
         {auth.authenicated ? (
           <div>
             <p>{fakeUser.name} have logged in</p>
-            <button type="submit">"Logout"</button>
+            <button type="submit">Logout</button>
           </div>
         ) : (
           <div>
