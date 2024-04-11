@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import useRegister from "../../hooks/useRegister";
+import useFetch from "../../hooks/useFetch";
 
 const fakeUser = {
   name: "parnia",
@@ -12,6 +13,7 @@ function Login() {
     authenicated: localStorage.getItem("authenicated") || false,
     error: "",
   });
+  const [selectedId, setSelectedId] = useState(null);
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!auth.authenicated) {
@@ -36,7 +38,20 @@ function Login() {
       setAuth((prevAuth) => ({ ...prevAuth, authenicated: !isAuth }));
     }
   };
-  const [error, loginUser] = useRegister();
+  const [dataTodo, errTodo, loadingTodo] = useFetch(
+    "https://jsonplaceholder.typicode.com",
+    "todos"
+  );
+  // const [error, loginUser] = useRegister();
+  const [data, errData, loading] = useFetch(
+    "https://jsonplaceholder.typicode.com",
+    "users"
+  );
+  const handleClick = (id) => {
+    setSelectedId(dataTodo.filter((todo)=>todo.userId==id));
+  }
+  // console.log(data,errData,loading);
+  console.log(dataTodo?.filter((todo)=>todo.id==2));
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -72,6 +87,37 @@ function Login() {
          <p>login user:{loginUser}</p>
          <p>error:{error}</p>
       </div> */}
+      <div>
+        <h1>Users :</h1>
+        {loading ? (
+          <p>loading...</p>
+        ) : (
+          <select name="users" id="users">
+            {data?.map((item) => {
+              return (
+                <option
+                  value={item.name}
+                  key={item.id}
+                  onClick={() => handleClick(id)}
+                >
+                  {item.name}
+                </option>
+              );
+            })}
+          </select>
+        )}
+      </div>
+      <div>
+        {loadingTodo ? (
+          <p>loading todos...</p>
+        ) : (
+          selectedId?.map((todo)=>{
+            return(<div key={todo.id}>
+              <input type="checkbox" name={todo.title} id={todo.id} checked={todo.completed}/>
+            </div>)}
+          )
+        )}
+      </div>
     </div>
   );
 }
