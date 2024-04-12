@@ -13,7 +13,19 @@ function Login() {
     authenicated: localStorage.getItem("authenicated") || false,
     error: "",
   });
-  const [selectedId, setSelectedId] = useState(null);
+  const [dataTodo, errTodo, loadingTodo] = useFetch(
+    "https://jsonplaceholder.typicode.com",
+    "todos"
+  );
+  // const [error, loginUser] = useRegister();
+  const [data, errData, loading] = useFetch(
+    "https://jsonplaceholder.typicode.com",
+    "users"
+  );
+  const [selectedId, setSelectedId] = useState(1);
+  const [selectedTodos, setSelectedTodos] = useState(
+    dataTodo?.filter((todo) => todo.userId == selectedId)
+  );
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!auth.authenicated) {
@@ -38,20 +50,11 @@ function Login() {
       setAuth((prevAuth) => ({ ...prevAuth, authenicated: !isAuth }));
     }
   };
-  const [dataTodo, errTodo, loadingTodo] = useFetch(
-    "https://jsonplaceholder.typicode.com",
-    "todos"
-  );
-  // const [error, loginUser] = useRegister();
-  const [data, errData, loading] = useFetch(
-    "https://jsonplaceholder.typicode.com",
-    "users"
-  );
-  const handleClick = (id) => {
-    setSelectedId(dataTodo.filter((todo)=>todo.userId==id));
-  }
+  useEffect(() => {
+    setSelectedTodos(dataTodo?.filter((todo) => todo.userId == selectedId));
+  }, [selectedId]);
   // console.log(data,errData,loading);
-  console.log(dataTodo?.filter((todo)=>todo.id==2));
+  // console.log(selectedTodos, selectedId);
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -92,15 +95,16 @@ function Login() {
         {loading ? (
           <p>loading...</p>
         ) : (
-          <select name="users" id="users">
+          <select
+            name="users"
+            id="users"
+            value={selectedId}
+            onChange={(e) => setSelectedId(e.target.value)}
+          >
             {data?.map((item) => {
               return (
-                <option
-                  value={item.name}
-                  key={item.id}
-                  onClick={() => handleClick(id)}
-                >
-                  {item.name}
+                <option value={item.id} key={item.id} id={item.id}>
+                  {item.id}_{item.name}
                 </option>
               );
             })}
@@ -111,11 +115,21 @@ function Login() {
         {loadingTodo ? (
           <p>loading todos...</p>
         ) : (
-          selectedId?.map((todo)=>{
-            return(<div key={todo.id}>
-              <input type="checkbox" name={todo.title} id={todo.id} checked={todo.completed}/>
-            </div>)}
-          )
+          selectedTodos?.map((todo) => {
+            return (
+              <div key={todo.id}>
+                <label htmlFor={todo.id}>{todo.userId}_{todo.id-((todo.userId-1)*20)}:{todo.title}</label>
+                <input
+                  type="checkbox"
+                  name={todo.id}
+                  id={todo.id}
+                  value={todo.title}
+                  checked={todo.completed}
+                  readOnly
+                />
+              </div>
+            );
+          })
         )}
       </div>
     </div>
