@@ -18,6 +18,33 @@
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
+.header_container{
+  margin: 0 4rem;
+}
+
+.header_ul{
+  display:flex;
+  flex-direction : row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap : 2rem;
+}
+
+.header_ul li{
+  list-style-type: none;
+  background-color: cadetblue;
+  border-radius: 2rem;
+  padding: 1rem;
+}
+.header_ul li a{
+  text-decoration: none;
+  color: black;
+}
+
+.header_ul li a:hover{
+  color: darkblue;
+}
 @keyframes logo-spin {
   from {
     transform: rotate(0deg);
