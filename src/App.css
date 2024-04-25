@@ -25,10 +25,10 @@
 .header_ul{
   display:flex;
   flex-direction : row;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   justify-content: space-between;
   align-items: center;
-  gap : 2rem;
+  gap : 1rem;
 }
 
 .header_ul li{
@@ -36,6 +36,7 @@
   background-color: cadetblue;
   border-radius: 2rem;
   padding: 1rem;
+  width: 25%;
 }
 .header_ul li a{
   text-decoration: none;
