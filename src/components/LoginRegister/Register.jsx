@@ -1,15 +1,11 @@
-import { Image, Label } from "@mui/icons-material";
-import {
-  Button,
-  Container,
-  FormControl,
-  Paper,
-  Select,
-  TextField,
-} from "@mui/material";
-import React from "react";
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import FormControl from "@mui/material/FormControl";
+import Paper from "@mui/material/Paper";
+import Select from "@mui/material/Select";
+import TextField from "@mui/material/TextField";
 
-function Login() {
+function Register() {
   return (
     <Container
       fixed
@@ -37,20 +33,18 @@ function Login() {
         required="true"
         component="form"
       >
-        <h1>Register :</h1>
-        <TextField variant="outlined" label="Name :" type="text" />
-        <TextField variant="outlined" label="Last Name :" type="text" />
-        <TextField variant="outlined" label="Phone Number :" type="number" />
+        <Typography variant=""></Typography>
+        <TextField variant="outlined" label="Name" type="text" />
+        <TextField variant="outlined" label="Last Name" type="text" />
+        <TextField variant="outlined" label="Phone Number" type="number" />
         <Select></Select>
         <Button variant="contained" type="submit">
           Register
         </Button>
       </FormControl>
-      <Paper elevation={1}>
-        
-      </Paper>
+      <Paper elevation={3}></Paper>
     </Container>
   );
 }
 
-export default Login;
+export default Register;
