@@ -1,9 +1,10 @@
 import { Button } from "@mui/material";
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
+import { useIsReg } from "../../context/IsRegProvider";
 
 function Home() {
-  const[isRegister,setIsRegister] =useState(JSON.parse(localStorage.getItem("isRegister"))||false);
+  const {isRegister} = useIsReg();
   return (
     <div>
       <h1>welcome to Home page :</h1>
